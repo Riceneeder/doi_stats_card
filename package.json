@@ -1,18 +1,68 @@
 {
-  "name": "doi_stats_card",
-  "version": "0.1.0",
-  "private": true,
+  "name": "react-doi-card",
+  "version": "1.0.0",
+  "description": "A React component for displaying DOI citation information with support for both English and Chinese literature",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md"
+  ],
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "build-lib": "bun run rollup -c && bun run tsc --project tsconfig.lib.json --declaration --emitDeclarationOnly --outDir dist",
+    "build-lib:watch": "bun run rollup -c --watch",
+    "prepare": "bun run build-lib",
+    "type-check": "bun run tsc --noEmit",
+    "clean": "rm -rf dist .next .rollup.cache",
+    "clean:all": "rm -rf dist .next node_modules",
+    "install:clean": "bun run clean:all && bun install",
+    "verify-build": "bun run build-lib && ls -la dist/ && echo '✅ Build verification complete'"
+  },
+  "keywords": [
+    "react",
+    "doi",
+    "citation",
+    "academic",
+    "paper",
+    "typescript",
+    "component"
+  ],
+  "author": "Riceneeder",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Riceneeder/doi_stats_card.git"
+  },
+  "homepage": "https://github.com/Riceneeder/doi_stats_card#readme",
+  "bugs": {
+    "url": "https://github.com/Riceneeder/doi_stats_card/issues"
+  },
+  "peerDependencies": {
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0"
   },
   "dependencies": {
     "cheerio": "^1.1.0",
     "next": "15.3.4",
-    "node-fetch": "^3.3.2",
+    "node-fetch": "^3.3.2"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-replace": "^6.0.2",
+    "@rollup/plugin-typescript": "^11.1.5",
+    "@types/node": "^20.10.0",
+    "@types/react": "^18.2.45",
+    "@types/react-dom": "^18.2.18",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "rollup": "^4.9.0",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "typescript": "^5.3.3"
   }
 }
