@@ -6,25 +6,26 @@ import * as cheerio from 'cheerio';
 // 常量配置
 const CONFIG = {
     SVG: {
-        WIDTH: 495,
-        LINE_HEIGHT: 16,
-        SECTION_GAP: 5,
+        WIDTH: 550,
+        LINE_HEIGHT: 15,
+        SECTION_GAP: 8,
         BASE_Y: 28,
-        PADDING: 10,
-        X_OFFSET: 25
+        PADDING: 0,
+        X_OFFSET: 18
     },
     TEXT_LIMITS: {
         TITLE: 75,
-        AUTHORS: 80,
-        JOURNAL: 80,
-        DOI: 80
+        AUTHORS: 75,
+        JOURNAL: 75,
+        DOI: 75
     },
     STYLES: {
-        title: 'fill:rgb(111, 193, 255); font-size: 13px; font-weight: 600;',
-        author: 'fill:rgb(0, 0, 0); font-size: 10px; font-weight: 500;',
-        journal: 'fill:rgb(0, 0, 0); font-size: 10px; font-style: italic; font-weight: 400;',
-        doi: 'fill:rgb(179, 0, 255); font-size: 11px; text-decoration: underline; cursor: pointer; font-weight: 300;',
-        bg: 'fill:rgb(255, 250, 241); stroke:rgb(233, 233, 233); stroke-width: 1; rx: 6;'
+        title: 'fill:#323130; font-size: 15px; font-weight: 600; font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;',
+        author: 'fill:#605e5c; font-size: 12px; font-weight: 400; font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;',
+        journal: 'fill:#605e5c; font-size: 12px; font-weight: 400; font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;',
+        doi: 'fill:#0078d4; font-size: 12px; font-weight: 500; font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;',
+        label: 'fill:#a19f9d; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;',
+        bg: 'fill:#ffffff; stroke:#e1dfdd; stroke-width: 1;'
     }
 };
 
@@ -49,6 +50,11 @@ const utils = {
         
         if (line) lines.push(line.trim());
         return lines.length ? lines : [''];
+    },
+
+    // 创建SVG标签元素
+    createLabelSVG(text, x, y) {
+        return `<text x="${x}" y="${y}" class="label">${this.escapeXml(text)}</text>`;
     },
 
     // 创建SVG文本元素
@@ -104,43 +110,58 @@ function generateSVGCard(cardData) {
     const wrappedTitle = utils.wrapText(title, CONFIG.TEXT_LIMITS.TITLE);
     const wrappedAuthors = utils.wrapText(authors, CONFIG.TEXT_LIMITS.AUTHORS);
     const wrappedJournal = utils.wrapText(journal, CONFIG.TEXT_LIMITS.JOURNAL);
-    const wrappedDOI = utils.wrapText(`DOI: ${doi}`, CONFIG.TEXT_LIMITS.DOI);
+    const wrappedDOI = utils.wrapText(doi, CONFIG.TEXT_LIMITS.DOI);
 
     // 计算Y坐标
     let currentY = CONFIG.SVG.BASE_Y;
     
+    // 标题部分
     const titleSVG = utils.createTextSVG(wrappedTitle, currentY, 'title');
     currentY += wrappedTitle.length * CONFIG.SVG.LINE_HEIGHT + CONFIG.SVG.SECTION_GAP;
     
+    // 作者部分
+    const authorLabelSVG = utils.createLabelSVG('Authors', CONFIG.SVG.X_OFFSET, currentY);
+    currentY += 12;
     const authorSVG = utils.createTextSVG(wrappedAuthors, currentY, 'author');
     currentY += wrappedAuthors.length * CONFIG.SVG.LINE_HEIGHT + CONFIG.SVG.SECTION_GAP;
     
+    // 期刊部分
+    const journalLabelSVG = utils.createLabelSVG('Published in', CONFIG.SVG.X_OFFSET, currentY);
+    currentY += 12;
     const journalSVG = utils.createTextSVG(wrappedJournal, currentY, 'journal');
     currentY += wrappedJournal.length * CONFIG.SVG.LINE_HEIGHT + CONFIG.SVG.SECTION_GAP;
     
+    // DOI部分
+    const doiLabelSVG = utils.createLabelSVG('DOI', CONFIG.SVG.X_OFFSET, currentY);
+    currentY += 12;
     const doiSVG = utils.createLinkSVG(wrappedDOI, currentY, url, 'doi');
     currentY += wrappedDOI.length * CONFIG.SVG.LINE_HEIGHT;
     
     const totalHeight = currentY + CONFIG.SVG.PADDING;
 
     const svg = `<?xml version="1.0" encoding="UTF-8"?>
-<svg width="${CONFIG.SVG.WIDTH}" height="${totalHeight}" viewBox="0 0 500 ${totalHeight}" 
+<svg width="${CONFIG.SVG.WIDTH}" height="${totalHeight}" viewBox="0 0 ${CONFIG.SVG.WIDTH} ${totalHeight}" 
      fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
      role="img" aria-labelledby="title desc">
-  <title id="title">DOI信息卡片</title>
-  <desc id="desc">显示文章标题、作者、期刊和DOI的卡片</desc>
+  <title id="title">DOI Citation Card</title>
+  <desc id="desc">Academic paper citation card displaying title, authors, journal, and DOI</desc>
   <style>
     .title { ${CONFIG.STYLES.title} }
     .author { ${CONFIG.STYLES.author} }
     .journal { ${CONFIG.STYLES.journal} }
     .doi { ${CONFIG.STYLES.doi} }
+    .label { ${CONFIG.STYLES.label} }
     .bg { ${CONFIG.STYLES.bg} }
+    .doi:hover { fill:#106ebe; }
   </style>
-  <rect class="bg" width="${CONFIG.SVG.WIDTH}" height="${totalHeight}" rx="6" />
+  <rect class="bg" width="${CONFIG.SVG.WIDTH}" height="${totalHeight}" rx="8" />
   <g>
 ${titleSVG}
+${authorLabelSVG}
 ${authorSVG}
+${journalLabelSVG}
 ${journalSVG}
+${doiLabelSVG}
 ${doiSVG}
   </g>
 </svg>`;
@@ -293,16 +314,19 @@ export async function GET(req) {
         
         // 生成错误SVG
         const errorSVG = `<?xml version="1.0" encoding="UTF-8"?>
-<svg width="495" height="120" viewBox="0 0 500 120" fill="none" xmlns="http://www.w3.org/2000/svg" role="img">
-  <title>错误</title>
+<svg width="480" height="140" viewBox="0 0 480 140" fill="none" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>Error</title>
   <style>
-    .error { fill:rgb(220, 53, 69); font-size: 12px; font-weight: 500; }
-    .bg { fill:rgb(248, 249, 250); stroke:rgb(220, 53, 69); stroke-width: 2; rx: 6; }
+    .error-title { fill:#d13438; font-size: 15px; font-weight: 600; font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, system-ui, sans-serif; }
+    .error-text { fill:#605e5c; font-size: 13px; font-weight: 400; font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, system-ui, sans-serif; }
+    .error-label { fill:#a19f9d; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, system-ui, sans-serif; }
+    .error-bg { fill:#ffffff; stroke:#d13438; stroke-width: 1; }
   </style>
-  <rect class="bg" width="495" height="120" rx="6" />
-  <text x="25" y="40" class="error">❌ 获取DOI信息失败</text>
-  <text x="25" y="65" class="error">错误: ${utils.escapeXml(error.message.substring(0, 60))}</text>
-  <text x="25" y="90" class="error">请检查DOI格式并重试</text>
+  <rect class="error-bg" width="480" height="140" rx="8" />
+  <text x="20" y="45" class="error-title">Failed to retrieve DOI information</text>
+  <text x="20" y="70" class="error-label">Error Details</text>
+  <text x="20" y="88" class="error-text">${utils.escapeXml(error.message.substring(0, 60))}</text>
+  <text x="20" y="115" class="error-text">Please verify the DOI format and try again</text>
 </svg>`;
 
         return new NextResponse(errorSVG, {
