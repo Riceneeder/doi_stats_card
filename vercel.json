@@ -6,12 +6,12 @@
   },
   "rewrites": [
     {
-      "source": "/api/(.*)",
-      "destination": "/api/$1"
+      "source": "/api/cndoi",
+      "destination": "https://www.chndoi.org/Resolution/Handler"
     },
     {
-      "source": "/(.*)",
-      "destination": "https://github.com/Riceneeder/doi_stats_card"
+      "source": "/api/(.*)",
+      "destination": "/api/$1"
     }
   ]
 }
