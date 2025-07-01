@@ -8,7 +8,7 @@ const nextConfig = {
     return [
       {
         source: '/((?!api).*)',
-        destination: 'https://github.com/yourusername/doi_stats_card',
+        destination: 'https://github.com/Riceneeder/doi_stats_card',
         permanent: true,
       },
     ]

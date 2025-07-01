@@ -11,7 +11,7 @@
     },
     {
       "source": "/(.*)",
-      "destination": "https://github.com/yourusername/doi_stats_card"
+      "destination": "https://github.com/Riceneeder/doi_stats_card"
     }
   ]
 }
