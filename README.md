@@ -1,36 +1,48 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# DOI Stats Card API
 
-## Getting Started
+这是一个用于生成DOI统计卡片的API服务，专门设计用于Vercel部署。
 
-First, run the development server:
+## API端点
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+### `/api/doi-card`
+
+生成DOI统计卡片的SVG图像。
+
+**参数：**
+- `doi`: DOI标识符（必需）
+- 其他可选参数请参考API代码
+
+**示例：**
+```
+GET /api/doi-card?doi=10.1000/example
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 部署配置
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+此项目配置为在Vercel上部署，具有以下特性：
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. **API路由保留**: `/api/*` 路径将正常访问API功能
+2. **自动重定向**: 所有其他路径将重定向到GitHub页面
+3. **最小化部署**: 只包含必要的API文件，去除了前端资源
 
-## Learn More
+## 配置文件
 
-To learn more about Next.js, take a look at the following resources:
+- `vercel.json`: Vercel部署配置，包含重写规则和函数配置
+- `next.config.mjs`: Next.js配置，设置重定向规则
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 部署到Vercel
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. 更新 `vercel.json` 和 `next.config.mjs` 中的GitHub URL
+2. 推送代码到您的GitHub仓库
+3. 在Vercel中连接您的GitHub仓库
+4. 部署完成后，API将在 `https://your-project.vercel.app/api/doi-card` 可用
 
-## Deploy on Vercel
+## 使用说明
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+部署后，您可以通过以下方式使用API：
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+curl "https://your-project.vercel.app/api/doi-card?doi=YOUR_DOI_HERE"
+```
+
+所有非API路径的访问都会重定向到您的GitHub项目页面。
