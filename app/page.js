@@ -25,7 +25,7 @@ export default function HomePage() {
 
         <div style={{ marginBottom: '2rem' }}>
           <h3>英文文献示例</h3>
-          <DoiCard doi="https://doi.org/10.1016/j.ijbiomac.2024.133614" />
+          <DoiCard doi="10.1038/s41598-025-01756-y" />
         </div>
 
         <div style={{ marginBottom: '2rem' }}>

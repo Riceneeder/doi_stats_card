@@ -14,7 +14,7 @@ const CONFIG = {
         X_OFFSET: 18
     },
     TEXT_LIMITS: {
-        TITLE: 75,
+        TITLE: 70,
         AUTHORS: 75,
         JOURNAL: 75,
         DOI: 75
