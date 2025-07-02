@@ -19,7 +19,7 @@
     "prepare": "bun run build-lib",
     "type-check": "bun run tsc --noEmit",
     "clean": "rm -rf dist .next .rollup.cache",
-    "clean:all": "rm -rf dist .next node_modules",
+    "clean:all": "rm -rf dist .next node_modules .rollup.cache",
     "install:clean": "bun run clean:all && bun install",
     "verify-build": "bun run build-lib && ls -la dist/ && echo '✅ Build verification complete'"
   },

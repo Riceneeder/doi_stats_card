@@ -1,124 +1,65 @@
-# DoiCard React 组件使用指南
+# 组件开发指南
 
-## 概述
+## 项目概述
 
-已成功创建了一个完整的 React 组件 `<DoiCard>`，用于显示 DOI 文献信息。组件支持：
+React DOI Card 是一个 TypeScript React 组件库，用于显示学术文献 DOI 信息卡片。
 
-- 接收完整的 DOI 链接或 DOI 码
-- 支持中英文文献信息获取
-- 自动检测和处理错误状态
-- 美观的加载动画
+## 核心组件
+
+### DoiCard 组件
+
+主要展示组件，支持：
+- 英文/中文文献显示
+- 自动错误处理
+- 自定义样式
 - 响应式设计
-- 自定义样式支持
 
-## 使用方法
+### useDoiData Hook
 
-### 基本用法
-
-```jsx
-import DoiCard from './components/DoiCard';
-
-function App() {
-  return (
-    <div>
-      {/* 英文文献（默认） */}
-      <DoiCard doi="https://doi.org/10.1000/182" />
-      
-      {/* 中文文献 */}
-      <DoiCard doi="https://doi.org/10.1000/182" lang="zh" />
-      
-      {/* 纯DOI码 */}
-      <DoiCard doi="10.1000/182" />
-    </div>
-  );
-}
-```
-
-### 支持的DOI格式
-
-```jsx
-// 完整HTTPS链接
-<DoiCard doi="https://doi.org/10.1000/182" />
-
-// 完整HTTP链接
-<DoiCard doi="http://doi.org/10.1000/182" />
-
-// doi: 前缀
-<DoiCard doi="doi:10.1000/182" />
-
-// 纯DOI码
-<DoiCard doi="10.1000/182" />
-```
-
-### 自定义样式
-
-```jsx
-<DoiCard 
-  doi="https://doi.org/10.1000/182"
-  className="my-custom-card"
-  style={{ 
-    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-    borderRadius: '12px'
-  }}
-/>
-```
-
-## Props 参数
-
-| 属性 | 类型 | 默认值 | 说明 |
-|------|------|--------|------|
-| `doi` | `string` | 必需 | 完整的DOI链接或DOI码 |
-| `lang` | `'en' \| 'zh' \| 'cn'` | `'en'` | 语言设置，en=英文，zh/cn=中文 |
-| `className` | `string` | `''` | 自定义CSS类名 |
-| `style` | `React.CSSProperties` | `{}` | 自定义样式对象 |
+数据获取逻辑：
+- 异步获取 DOI 数据
+- 状态管理（loading/error/success）
+- 自动重试机制
 
 ## 项目结构
 
 ```
-├── components/
-│   ├── DoiCard.jsx           # 主组件
-│   ├── DoiCard.d.ts         # TypeScript类型定义
-│   ├── DoiCardExample.jsx   # 使用示例
-│   ├── README.md            # 组件详细文档
-│   └── index.js             # 统一导出
-├── hooks/
-│   └── useDoiData.js        # 数据获取Hook
-└── app/
-    ├── page.js              # 主页面（展示组件）
-    ├── components/page.js   # 组件演示页面
-    └── api/doi-card/route.js # API端点
+src/
+├── components/DoiCard.tsx    # 主组件
+├── hooks/useDoiData.ts       # 数据 Hook
+├── types/index.ts            # 类型定义
+└── index.ts                  # 入口文件
 ```
 
-## 运行项目
+## 开发环境
 
-1. 安装依赖（如果还没有安装）：
 ```bash
-npm install
+bun install        # 安装依赖
+bun run dev        # 开发模式
+bun run build-lib  # 构建组件库
+bun run type-check # 类型检查
 ```
 
-2. 启动开发服务器：
-```bash
-npm run dev
-```
+## 自定义开发
 
-3. 访问以下页面：
-   - 主页：http://localhost:3000
-   - 组件演示：http://localhost:3000/components
+### 添加新 Props
 
-## API 端点
+1. 在 `src/types/index.ts` 中定义类型
+2. 在 `DoiCard.tsx` 中实现功能
+3. 更新文档
 
-组件内部使用了 `/api/doi-card` API 端点，你也可以直接使用：
+### 修改样式
 
-```
-GET /api/doi-card?doi=10.1000/182&lang=en
-GET /api/doi-card?doi=10.1000/182&lang=zh
-```
+组件使用内联样式，支持：
+- TypeScript 类型安全
+- 用户自定义覆盖
+- 响应式设计
+
+### 扩展数据源
+
+在 `useDoiData.ts` 中添加新的 API 调用逻辑。
 
 ## 特性
-
-### 自动语言检测
-- 组件会根据 DOI 前缀自动判断可能的语言类型
-- 支持常见的中文DOI前缀识别
 
 ### 错误处理
 - 网络错误处理

@@ -1,53 +1,110 @@
-# React DOI Card - 发布指南
+# 发布指南
 
-## 📦 NPM 包发布结构重构完成
+## 概述
 
-项目已成功重构为 TypeScript 并准备发布到 NPM。以下是主要变更和发布流程：
+React DOI Card 项目已完成 TypeScript 重构，可以发布到 NPM。
 
-## 🔄 重构内容
-
-### 1. 项目结构调整
+## 项目结构
 
 ```
-├── src/                          # 源代码目录
-│   ├── components/
-│   │   └── DoiCard.tsx          # 主组件（TS版本）
-│   ├── hooks/
-│   │   └── useDoiData.ts        # 自定义Hook（TS版本）
-│   ├── types/
-│   │   └── index.ts             # 类型定义
-│   ├── index.ts                 # 主入口文件
-│   └── README.md                # NPM包文档
-├── dist/                        # 构建输出目录
-├── app/                         # Next.js应用（开发演示用）
-├── package.json                 # NPM配置
-├── tsconfig.json               # TypeScript配置
-├── tsconfig.lib.json           # 库构建TS配置
-├── rollup.config.js            # 构建配置
-└── .npmignore                  # NPM发布忽略文件
+├── src/                  # 源代码
+│   ├── components/       # React 组件
+│   ├── hooks/           # 自定义 Hook
+│   ├── types/           # TypeScript 类型
+│   └── index.ts         # 入口文件
+├── dist/                # 构建输出
+├── package.json         # NPM 配置
+├── tsconfig.json        # TypeScript 配置
+└── rollup.config.js     # 构建配置
 ```
 
-### 2. TypeScript 重构
+## 发布流程
 
-- ✅ 完整的 TypeScript 类型定义
-- ✅ 严格的类型检查
-- ✅ 导出所有必要的类型接口
-- ✅ 零运行时类型错误
-
-### 3. 构建系统
-
-- ✅ Rollup 构建配置
-- ✅ CommonJS + ES Module 双格式输出
-- ✅ TypeScript 声明文件生成
-- ✅ 依赖外部化（React作为peer dependency）
-
-## 🚀 发布流程（使用 Bun）
-
-### 第一步：安装依赖
+### 1. 环境准备
 
 ```bash
-# 安装 bun（如果没有安装）
+# 安装 bun（推荐）
 curl -fsSL https://bun.sh/install | bash
+
+# 安装依赖
+bun install
+```
+
+### 2. 构建组件库
+
+```bash
+# 构建
+bun run build-lib
+
+# 验证构建
+bun run verify-build
+```
+
+### 3. 测试
+
+```bash
+# 类型检查
+bun run type-check
+
+# 本地测试
+bun run dev
+```
+
+### 4. 发布到 NPM
+
+```bash
+# 登录 NPM
+npm login
+
+# 发布
+npm publish
+```
+
+## 构建输出
+
+构建完成后，`dist/` 目录将包含：
+- `index.js` - CommonJS 版本
+- `index.esm.js` - ES Module 版本  
+- `index.d.ts` - TypeScript 声明文件
+
+## 版本管理
+
+```bash
+# 更新版本
+npm version patch  # 1.0.0 -> 1.0.1
+npm version minor  # 1.0.0 -> 1.1.0
+npm version major  # 1.0.0 -> 2.0.0
+```
+
+## 注意事项
+
+1. 确保所有依赖都在 `peerDependencies` 中
+2. 测试在不同 React 版本下的兼容性
+3. 更新 README 和文档
+4. 检查 `.npmignore` 文件
+
+## 自动化发布
+
+可以配置 GitHub Actions 自动发布：
+
+```yaml
+# .github/workflows/publish.yml
+name: Publish to NPM
+on:
+  push:
+    tags: ['v*']
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: oven-sh/setup-bun@v1
+      - run: bun install
+      - run: bun run build-lib
+      - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+```
 
 # 安装项目依赖
 bun install

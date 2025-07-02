@@ -1,58 +1,109 @@
-# DOI卡片使用示例
+# 使用示例
 
-本文档提供了在不同场景中使用DOI Stats Card API的具体示例。
+React DOI Card 的各种使用场景和示例。
 
-## 基础示例
+## 基础用法
 
-### 单个DOI引用
+### 单个文献引用
 
-```markdown
-![Nature Paper](https://doicard.gankun.cn.ma/api/doi-card?doi=10.1038/nature12373)
+```tsx
+import { DoiCard } from 'react-doi-card';
+
+<DoiCard doi="10.1038/nature12373" />
 ```
 
-### 多篇论文列表
+### 多篇论文展示
 
-```markdown
-## 我的发表论文
-
-### 2023年发表
-
-![Paper 1](https://doicard.gankun.cn.ma/api/doi-card?doi=10.1038/s41586-023-06404-3)
-
-### 2022年发表
-
-![Paper 2](https://doicard.gankun.cn.ma/api/doi-card?doi=10.1126/science.abm6609)
-![Paper 3](https://doicard.gankun.cn.ma/api/doi-card?doi=10.1016/j.cell.2022.03.030)
+```tsx
+<div>
+  <h2>相关研究</h2>
+  <DoiCard doi="10.1038/nature12373" />
+  <DoiCard doi="10.1126/science.1260419" />
+  <DoiCard doi="10.1016/j.cell.2023.01.043" />
+</div>
 ```
 
 ## 高级用法
 
-### 在表格中使用
+### 中文文献
 
-```markdown
-| 年份 | 论文 | DOI卡片 |
-|------|------|---------|
-| 2023 | 人工智能研究 | ![DOI](https://doicard.gankun.cn.ma/api/doi-card?doi=10.1038/s41586-023-06404-3) |
-| 2022 | 生物学发现 | ![DOI](https://doicard.gankun.cn.ma/api/doi-card?doi=10.1126/science.abm6609) |
+```tsx
+<DoiCard 
+  doi="10.11821/dlxb202001001" 
+  lang="zh"
+  chineseDoiAuth={{
+    username: "your_username",
+    password: "your_password"
+  }}
+/>
 ```
 
-### 带有说明的引用
+### 自定义样式
 
-```markdown
-## 相关工作
-
-以下论文为我们的研究提供了重要基础：
-
-**基础理论**
-![Foundation Paper](https://doicard.gankun.cn.ma/api/doi-card?doi=10.1038/nature12373)
-
-这篇论文建立了我们方法的理论基础...
-
-**方法改进**  
-![Method Paper](https://doicard.gankun.cn.ma/api/doi-card?doi=10.1126/science.abm6609)
-
-该研究提出的方法显著改进了...
+```tsx
+<DoiCard 
+  doi="10.1038/nature12373"
+  className="shadow-lg"
+  style={{ 
+    borderRadius: '16px',
+    maxWidth: '600px'
+  }}
+/>
 ```
+
+### 响应式布局
+
+```tsx
+<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+  <DoiCard doi="10.1038/nature12373" />
+  <DoiCard doi="10.1126/science.1260419" />
+</div>
+```
+
+## 在不同框架中使用
+
+### Next.js
+
+```tsx
+'use client';
+import { DoiCard } from 'react-doi-card';
+
+export default function PaperPage() {
+  return <DoiCard doi="10.1038/nature12373" />;
+}
+```
+
+### Vite React
+
+```tsx
+import { DoiCard } from 'react-doi-card';
+
+function App() {
+  return (
+    <main>
+      <DoiCard doi="10.1038/nature12373" />
+    </main>
+  );
+}
+```
+
+## 常见 DOI 示例
+
+### 英文期刊
+- Nature: `10.1038/nature12373`
+- Science: `10.1126/science.1260419`
+- Cell: `10.1016/j.cell.2023.01.043`
+
+### 中文期刊
+- 地理学报: `10.11821/dlxb202001001`
+- 北京大学学报: `10.13209/j.0479-8023.2021.002`
+
+## 最佳实践
+
+1. **性能优化**: 为避免重复请求，可以使用 React.memo
+2. **错误处理**: 组件内置错误处理，无需额外处理
+3. **样式一致性**: 使用统一的 className 或 style props
+4. **无障碍**: 组件已包含基本的无障碍支持
 
 ### 在项目README中展示成果
 

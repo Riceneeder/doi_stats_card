@@ -1,33 +1,59 @@
-# 项目重构完成总结
+# 项目状态
 
-## 🎉 项目重构状态：**完全完成**
+## 当前版本
+**v1.0.0** - 完全完成并可用于生产环境
 
-### ✅ 已完成的主要任务
+## 完成功能
 
-#### 1. TypeScript 迁移
-- ✅ 创建了完整的 TypeScript 项目结构 (`src/`)
-- ✅ 定义了类型声明 (`src/types/index.ts`)
-- ✅ 重构 React 组件为 TypeScript (`src/components/DoiCard.tsx`)
-- ✅ 重构数据获取逻辑为 TypeScript (`src/hooks/useDoiData.ts`)
-- ✅ 配置了 TypeScript 编译 (`tsconfig.json`, `tsconfig.lib.json`)
+### ✅ 核心功能
+- React 组件库（TypeScript）
+- 双语支持（英文/中文文献）
+- 独立数据获取（无需本地 API）
+- 完整错误处理和状态管理
 
-#### 2. 包管理器切换
-- ✅ 从 npm/yarn 切换为 **bun**
-- ✅ 配置了 `bunfig.toml`
-- ✅ 清理了 `node_modules`, `package-lock.json`, `yarn.lock`
-- ✅ 更新所有 `package.json` 脚本使用 bun
+### ✅ 技术栈
+- **语言**: TypeScript
+- **构建**: Rollup + Bun
+- **框架**: React 16.8+
+- **样式**: 内联样式
+- **API**: CrossRef（英文）+ 中国DOI（中文）
 
-#### 3. 构建配置
-- ✅ 配置了 **Rollup** 构建系统 (`rollup.config.js`)
-- ✅ 支持 ESM (`dist/index.esm.js`) 和 CJS (`dist/index.js`) 输出
-- ✅ 生成 TypeScript 声明文件 (`dist/index.d.ts`)
-- ✅ 支持 React JSX/TSX 构建
-- ✅ 生成 source maps
+### ✅ 发布就绪
+- NPM 包结构完整
+- 类型声明文件
+- 双格式输出（CJS/ESM）
+- 完整文档
 
-#### 4. 独立的数据获取
-- ✅ **完全独立架构**：组件库不依赖本地API端点
-- ✅ **直接调用外部API**：
-  - 英文文献：使用 CrossRef API (api.crossref.org)
+## 架构优势
+
+1. **完全独立**: 不依赖本地 API 服务
+2. **类型安全**: 完整 TypeScript 支持
+3. **轻量级**: 零额外依赖
+4. **易用性**: 开箱即用
+
+## 使用方法
+
+```tsx
+import { DoiCard } from 'react-doi-card';
+
+<DoiCard doi="10.1038/nature12373" />
+```
+
+## 开发环境
+
+本项目还包含一个 Next.js 演示应用用于开发和测试：
+
+```bash
+bun install
+bun run dev  # 启动演示应用
+```
+
+## 后续计划
+
+- [ ] 添加更多自定义主题
+- [ ] 支持更多文献数据库
+- [ ] 优化移动端显示
+- [ ] 添加文献引用格式导出
   - 中文文献：使用 中国DOI解析服务 (www.chndoi.org)
 - ✅ **CORS 友好**：支持跨域调用外部服务
 - ✅ **错误处理**：完整的网络请求错误处理机制

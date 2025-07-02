@@ -1,33 +1,48 @@
-# React DOI Card - TypeScript 重构完成总结
+# TypeScript 重构总结
 
-## 🎉 重构完成
+## 重构完成 ✅
 
-项目已成功重构为 TypeScript 并准备发布到 NPM！
+项目已成功从 JavaScript 重构为 TypeScript。
 
-## 📁 新的项目结构
+## 主要变更
 
+### 新项目结构
 ```
-doi_stats_card/
-├── src/                          # 📦 NPM 包源代码
-│   ├── components/
-│   │   └── DoiCard.tsx          # 主组件 (TypeScript)
-│   ├── hooks/
-│   │   └── useDoiData.ts        # 自定义 Hook (TypeScript)
-│   ├── types/
-│   │   └── index.ts             # 完整类型定义
-│   ├── index.ts                 # 主入口文件
-│   └── README.md                # NPM 包文档
-├── app/                         # 🌐 Next.js 演示应用
-│   ├── page.js                  # 主页面 (更新为使用新组件)
-│   ├── components/page.js       # 组件演示页面
-│   └── api/doi-card/route.js    # API 端点
-├── components/                  # 🔄 旧版组件 (兼容性)
-├── hooks/                       # 🔄 旧版 Hook (兼容性)
-├── dist/                        # 📦 构建输出 (生成)
-├── package.json                 # NPM 配置
-├── tsconfig.json               # TypeScript 配置
-├── rollup.config.js            # 构建工具配置
-├── build.sh                    # 构建脚本
+src/                     # TypeScript 源代码
+├── components/DoiCard.tsx
+├── hooks/useDoiData.ts
+├── types/index.ts
+└── index.ts
+```
+
+### 构建系统
+- **构建工具**: Rollup
+- **包管理**: Bun
+- **输出格式**: CommonJS + ES Module
+- **类型声明**: 完整的 .d.ts 文件
+
+### 类型安全
+- 完整的 TypeScript 类型定义
+- 严格的类型检查
+- 运行时类型安全
+
+## 使用方法
+
+```tsx
+import { DoiCard } from 'react-doi-card';
+
+<DoiCard doi="10.1038/nature12373" />
+```
+
+## 开发命令
+
+```bash
+bun run build-lib    # 构建组件库
+bun run type-check   # 类型检查
+bun run dev          # 开发模式
+```
+
+重构使项目更加健壮、类型安全，并为 NPM 发布做好了准备。
 ├── PUBLISH_GUIDE.md            # 发布指南
 └── README.md                   # 项目主文档
 ```
